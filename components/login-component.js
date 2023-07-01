@@ -1,4 +1,4 @@
-import { login } from "../api.js";
+import { loginUser } from "../api.js";
 
 export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
     const appHtml = `
@@ -10,7 +10,7 @@ export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
                 <input type="text" id="login-input" class="input"/>
                 <br>
                 Пароль:
-                <input type="text" id="login-input" class="input"/>
+                <input type="password" id="password-input" class="input"/>
                 </div>
                 <br>
                 <button class="button" id="login-button">Войти</button>
@@ -20,11 +20,23 @@ export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
             appEl.innerHTML = appHtml;
 
             document.getElementById("login-button").addEventListener('click', () => {
+                const login = document.getElementById("login-input").value;
+                const password = document.getElementById("password-input").value;
+
+                if (!login) {
+                    alert('Введите логин');
+                    return;
+                }
+
+                if (!password) {
+                    alert('Введите пароль');
+                    return;
+                }
                 
                 setToken("Bearer dgc0boasc8as6g5g5k5o5s5w606g39o3cc3e83ek3ck3b43k38o");
-                login({
-                    login: 'admin', 
-                    password: 'admin',
+                loginUser({
+                    login: login, 
+                    password: password,
                 })
                 .then((user) => {
                     console.log(user);
@@ -32,6 +44,10 @@ export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
                     setToken(`Bearer ${user.user.token}`);
                     fetchTodosAndRender();
                 })
+                .catch(error => {
+                    // TODO: Выводить алерт красиво
+                    alert(error.message);
+                });
 
             });
 }
