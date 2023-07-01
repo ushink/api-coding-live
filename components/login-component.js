@@ -1,4 +1,4 @@
-import { loginUser } from "../api.js";
+import { loginUser, registerUser } from "../api.js";
 
 export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
     let isLoginMode = false;
@@ -61,7 +61,42 @@ export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
                         alert(error.message);
                     });   
             } else {
-                alert('Заглушка регистрации');
+
+                const login = document.getElementById("login-input").value;
+                const name = document.getElementById("name-input").value;
+                const password = document.getElementById("password-input").value;
+    
+                if (!name) {
+                    alert('Введите имя');
+                    return;
+                }
+
+                if (!login) {
+                    alert('Введите логин');
+                    return;
+                }
+    
+                if (!password) {
+                    alert('Введите пароль');
+                    return;
+                }
+                
+                setToken("Bearer dgc0boasc8as6g5g5k5o5s5w606g39o3cc3e83ek3ck3b43k38o");
+                registerUser({
+                        login: login, 
+                        name: name,
+                        password: password,
+                    })
+                    .then((user) => {
+                        console.log(user);
+    
+                        setToken(`Bearer ${user.user.token}`);
+                        fetchTodosAndRender();
+                    })
+                    .catch(error => {
+                        // TODO: Выводить алерт красиво
+                        alert(error.message);
+                    });   
             };
             
 
