@@ -84,8 +84,9 @@ export function renderLoginComponent({appEl, setToken, fetchTodosAndRender}) {
                 setToken("Bearer dgc0boasc8as6g5g5k5o5s5w606g39o3cc3e83ek3ck3b43k38o");
                 registerUser({
                         login: login, 
-                        name: name,
                         password: password,
+                        name: name[0].toUpperCase() + name.slice(1).toLowerCase(),
+                        // Приводим первый символ к верхнему регистру + остальную часть к нижнему
                     })
                     .then((user) => {
                         console.log(user);
