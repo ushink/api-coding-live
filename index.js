@@ -33,16 +33,41 @@ import { format } from "date-fns";
 
         // const formatDate = (date) => {
         //     return `${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}/${date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth()}/${date.getFullYear()} ${date.getHours() < 10 ? '0' + date.getHours() : date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()}`};
-        const country = "ru";
+        // const country = "ru";
+        // const tasksHtml = tasks
+        //         .map((task) => {
+        //         return `
+        //         <li class="task">
+        //             <p class="task-text">
+        //             ${task.text} (Создал: ${task.user?.name ?? 'Неизвестно'})
+        //             <button data-id="${task.id}" class="button delete-button">Удалить</button>
+        //             </p>
+        //             <p><i>Задача создана: ${country === "ru" ? formatDateToRu(new Date(task.created_at)) : formatDateToUs(new Date(task.created_at))}</i></p>
+        //         </li>`;
+        // })
+        // .join("");
+        const now = new Date();
+
+        format(now, "dd/MM/yyyy hh:mm"); // 26/03/2023 10:33
+        format(now, "MM-dd-yyyy hh:mm"); // 03-26-2023 10:33
+        format(now, "dd.MM.yyyy hh:mm:ss"); // 26.03.2023 10:33:41
+
         const tasksHtml = tasks
-                .map((task) => {
-                return `
+        .map((task) => {
+                // Вызываем функцию format из date-fns, первый параметр — это дата, которую
+                // хотим отформатировать, второй параметр — это строка: к какому формату
+                // желаем привести дату. Обратите внимание MM — это номер месяца,
+                // mm — это минуты
+            const createDate = format(new Date(task.created_at), "dd.MM.yyyy hh:mm:ss");
+            return `
                 <li class="task">
-                    <p class="task-text">
-                    ${task.text} (Создал: ${task.user?.name ?? 'Неизвестно'})
-                    <button data-id="${task.id}" class="button delete-button">Удалить</button>
-                    </p>
-                    <p><i>Задача создана: ${country === "ru" ? formatDateToRu(new Date(task.created_at)) : formatDateToUs(new Date(task.created_at))}</i></p>
+                <p class="task-text">
+                    ${task.text} (Создал: ${task.user?.name ?? "Неизвестно"})
+                    <button data-id="${
+                    task.id
+                    }" class="button delete-button">Удалить</button>
+                </p>
+                <p><i>Задача создана: ${createDate}</i></p>
                 </li>`;
         })
         .join("");
